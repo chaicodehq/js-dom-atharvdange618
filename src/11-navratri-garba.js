@@ -89,25 +89,86 @@
  *   // => deep clone of stage with id "stage-clone"
  */
 export function insertDancer(stage, newDancer, referenceDancer) {
-  // Your code here
+  // Validation
+  if (!stage || !newDancer) return false;
+
+  try {
+    if (referenceDancer) {
+      stage.insertBefore(newDancer, referenceDancer);
+    } else {
+      stage.appendChild(newDancer);
+    }
+    return true;
+  } catch (error) {
+    console.error("Insertion failed:", error);
+    return false;
+  }
 }
 
 export function cloneDancer(dancer, deep) {
-  // Your code here
+  // Validation
+  if (!dancer) return null;
+
+  const clone = dancer.cloneNode(deep);
+  if (clone.id) {
+    clone.id = `${clone.id}-copy`;
+  }
+  return clone;
 }
 
 export function replaceDancer(stage, oldDancer, newDancer) {
-  // Your code here
+  // Validation
+  if (!stage || !oldDancer || !newDancer) return null;
+
+  try {
+    return stage.replaceChild(newDancer, oldDancer);
+  } catch (error) {
+    console.error("Replacement failed:", error);
+    return null;
+  }
 }
 
 export function removeDancer(stage, dancer) {
-  // Your code here
+  // Validation
+  if (!stage || !dancer) return null;
+
+  try {
+    return stage.removeChild(dancer);
+  } catch (error) {
+    console.error("Removal failed:", error);
+    return null;
+  }
 }
 
 export function rearrangeStage(stage, order) {
-  // Your code here
+  // Validation
+  if (!stage || !Array.isArray(order)) return false;
+
+  const children = Array.from(stage.children);
+  if (children.length !== order.length) return false;
+
+  try {
+    const newOrder = order.map((index) => {
+      if (index < 0 || index >= children.length)
+        throw new Error("Invalid index");
+      return children[index];
+    });
+
+    newOrder.forEach((child) => stage.appendChild(child));
+    return true;
+  } catch (error) {
+    console.error("Rearrangement failed:", error);
+    return false;
+  }
 }
 
 export function duplicateFormation(stage) {
-  // Your code here
+  // Validation
+  if (!stage) return null;
+
+  const clone = stage.cloneNode(true);
+  if (clone.id) {
+    clone.id = `${clone.id}-clone`;
+  }
+  return clone;
 }

@@ -65,17 +65,73 @@
  *   // => "cutting" (cheapest chai gets "cheapest" class)
  */
 export function updateChaiPrice(document, chaiType, newPrice) {
-  // Your code here
+  // Validation
+  if (typeof chaiType !== "string" || chaiType.trim() === "") {
+    return false;
+  }
+  if (typeof newPrice !== "number" || newPrice <= 0) {
+    return false;
+  }
+
+  const priceElement = document.getElementById(`price-${chaiType}`);
+  if (!priceElement) {
+    return false;
+  }
+
+  priceElement.textContent = `₹${newPrice}`;
+  return true;
 }
 
 export function getChaiPrice(document, chaiType) {
-  // Your code here
+  // Validation
+  if (typeof chaiType !== "string" || chaiType.trim() === "") {
+    return null;
+  }
+
+  const priceElement = document.getElementById(`price-${chaiType}`);
+  if (!priceElement) {
+    return null;
+  }
+
+  const priceText = priceElement.textContent;
+  const price = parseFloat(priceText.replace("₹", ""));
+  return isNaN(price) ? null : price;
 }
 
 export function updateStallName(document, newName) {
-  // Your code here
+  // Validation
+  if (typeof newName !== "string" || newName.trim() === "") {
+    return null;
+  }
+
+  const stallNameElement = document.querySelector(".stall-name");
+  if (!stallNameElement) {
+    return null;
+  }
+
+  const oldName = stallNameElement.textContent;
+  stallNameElement.textContent = newName;
+  return oldName;
 }
 
 export function highlightCheapestChai(document) {
-  // Your code here
+  const chaiPriceElements = document.querySelectorAll(".chai-price");
+  if (chaiPriceElements.length === 0) {
+    return null;
+  }
+
+  let cheapestElement = chaiPriceElements[0];
+  let lowestPrice = parseFloat(cheapestElement.textContent.replace("₹", ""));
+
+  chaiPriceElements.forEach((element) => {
+    const price = parseFloat(element.textContent.replace("₹", ""));
+    if (price < lowestPrice) {
+      lowestPrice = price;
+      cheapestElement = element;
+    }
+    element.classList.remove("cheapest");
+  });
+
+  cheapestElement.classList.add("cheapest");
+  return cheapestElement.getAttribute("data-chai");
 }

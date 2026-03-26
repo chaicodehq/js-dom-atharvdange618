@@ -87,29 +87,57 @@
  *   // => { total: 2, waiting: 1, serving: 1, completed: 0 }
  */
 export function findQueueContainer(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return null;
+  return element.closest(".queue-container");
 }
 
 export function getNextInQueue(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return null;
+  return element.nextElementSibling;
 }
 
 export function getPreviousInQueue(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return null;
+  return element.previousElementSibling;
 }
 
 export function getQueuePosition(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return -1;
+  if (!element.parentNode) return -1;
+  const children = Array.from(element.parentNode.children);
+  return children.indexOf(element) + 1;
 }
 
 export function moveToFront(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return false;
+  if (!element.parentNode) return false;
+  if (element.parentNode.firstElementChild === element) return false;
+  element.parentNode.insertBefore(element, element.parentNode.firstChild);
+  return true;
 }
 
 export function removeFromQueue(element) {
-  // Your code here
+  // Validation
+  if (!element || !(element instanceof HTMLElement)) return null;
+  if (!element.parentNode) return null;
+  return element.parentNode.removeChild(element);
 }
 
 export function getQueueStats(queueContainer) {
-  // Your code here
+  // Validation
+  if (!queueContainer || !(queueContainer instanceof HTMLElement)) return null;
+
+  const stats = {
+    total: queueContainer.children.length,
+    waiting: queueContainer.querySelectorAll(".waiting").length,
+    serving: queueContainer.querySelectorAll(".serving").length,
+    completed: queueContainer.querySelectorAll(".completed").length,
+  };
+
+  return stats;
 }
